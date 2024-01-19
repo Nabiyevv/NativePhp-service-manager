@@ -15,7 +15,7 @@ class ServiceCard extends Component
 
         public bool $status = false,
         public string $serviceName = '',
-        public string $serviceTitle = '',
+        public string $serviceDescription = '',
 
         )
     {
