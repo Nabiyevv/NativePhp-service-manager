@@ -20,3 +20,5 @@ Route::post('/service', [ServiceController::class,'service'])->name('service');
 Route::post('/service/start', [ServiceController::class,'start'])->name('service.start');
 Route::post('/service/stop', [ServiceController::class,'stop'])->name('service.stop');
 Route::post('/service/restart', [ServiceController::class,'restart'])->name('service.restart');
+
+Route::post('/service/addAll',[ServiceController::class,'addAllServices'])->name('service.addAll');
