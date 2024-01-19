@@ -17,7 +17,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @foreach ($services as $service )
                 <x-service-card 
-                    serviceTitle="{{ $service->title }}"
+                    serviceDescription="{{ $service->description }}"
                     serviceName="{{ $service->name }}"
                     status="{{ $service->status }}"/>
             @endforeach
@@ -27,19 +27,21 @@
     
     <script>
         function submitForm(serviceName) {
-            // Prevent the default form submission behavior
-            event.preventDefault();
-            console.log("salam");
-            axios.post("{{ route('service.start') }}",{serviceName: serviceName})
+            axios.post("{{ route('service.addAll') }}")
             .then((response) => {
-                console.log(response.data)
-                if(response.data['isActive'])
-                {
-                    window.location.reload();
-                    document.getElementById('isRunning').innerHTML = "Running";
-                }
+                console.log(response.data);
             })
             .catch((error) => console.log(error));
+
+
+            // Prevent the default form submission behavior
+            // event.preventDefault();
+            // console.log("salam");
+            // axios.post("{{ route('service.start') }}",{serviceName: serviceName})
+            // .then((response) => {
+            //     toggleStatus(response.data['isActive'], serviceName);
+            // })
+            // .catch((error) => console.log(error));
         }
 
         function stopService(serviceName)
@@ -47,9 +49,7 @@
             event.preventDefault();
             axios.post("{{ route('service.stop') }}",{serviceName: serviceName})
             .then((response) => {
-                console.log(response.data['isActive'])
-                console.log(response.data);
-                window.location.reload();
+                toggleStatus(response.data['isActive'], serviceName);
             })
             .catch((error) => console.log(error));
         }
@@ -59,11 +59,20 @@
             event.preventDefault();
             axios.post("{{ route('service.restart') }}",{serviceName: serviceName})
             .then((response) => {
-                console.log(response.data['isActive'])
-                console.log(response.data);
-                window.location.reload();
+                toggleStatus(response.data['isActive'], serviceName);
             })
             .catch((error) => console.log(error));
         }
+
+        function toggleStatus(isActive, serviceName)
+        {
+            if(isActive)
+                {
+                    document.getElementById(serviceName).innerHTML = `Status: <span class="font-bold text-green-500" id="isRunning">Running</span>`;
+                }
+                else 
+                    document.getElementById(serviceName).innerHTML = `Status: <span class="font-bold text-red-500" id="isStopped">Stopped</span>`; 
+        }
+
     </script>
 </html>
