@@ -9,54 +9,57 @@ use Illuminate\Http\Request;
 class ServiceController extends Controller
 {
     //
-    public function index(Request $request)
+    public function index()
     {
-        $services = Service::all();
+        // $services = Service::all(); 
+        return view('custom');
+    }
 
-        return view('custom', compact('services'));
+    public function searchService(string $serviceName)
+    {
+        $serviceName = strtolower($serviceName); 
+
+        $services = Service::whereRaw('LOWER(description) LIKE ?', ['%' . $serviceName . '%'])                
+        ->orwhereRaw('LOWER(name) LIKE ?', ['%' . $serviceName . '%'])
+        ->orderBy('isFavorite', 'desc')->get();
+        return $services;
     }
 
     public function service(Request $request)
     {
-
         return back();
     }
 
-    public function start(Request $request)
+    public function start(string $serviceName)
     {
-        // dd($request->input('serviceName'));
-        Service::where('name', $request->input('serviceName'))
+        Service::where('name', $serviceName)
             ->update(['status' => true]);
-        // dd(Service::where('name', $request->input('serviceName'))->get());
-        shell_exec('systemctl start ' . $request->input('serviceName'));
-        $output = shell_exec('systemctl status ' . $request->input('serviceName'));
+        shell_exec('systemctl start ' . $serviceName);
+        $output = shell_exec('systemctl status ' . $serviceName);
 
         $isActive = strpos($output, 'Active: active') !== false;
-        return response()->json(['success' => true, 'command' => $output, 'isActive' => $isActive]);
+        return $isActive;
     }
 
-    public function stop(Request $request)
+    public function stop(string $serviceName)
     {
-        // dd($request->input('serviceName'));
-        Service::where('name', $request->input('serviceName'))
+        Service::where('name', $serviceName)
             ->update(['status' => false]);
-        // dd($request->input('serviceName'));
-        shell_exec('systemctl stop ' . $request->input('serviceName'));
-        $output = shell_exec('systemctl status ' . $request->input('serviceName'));
+        shell_exec('systemctl stop ' . $serviceName);
+        $output = shell_exec('systemctl status ' . $serviceName);
 
         $isActive = strpos($output, 'Active: active') !== false;
-        return response()->json(['success' => true, 'command' => $output, 'isActive' => $isActive]);
+        return $isActive;
     }
 
-    public function restart(Request $request)
+    public function restart(string $serviceName)
     {
-        Service::where('name', $request->input('serviceName'))
+        Service::where('name', $serviceName)
             ->update(['status' => true]);
-        shell_exec('systemctl restart ' . $request->input('serviceName'));
-        $output = shell_exec('systemctl status ' . $request->input('serviceName'));
-        sleep(2);
+        shell_exec('systemctl restart ' . $serviceName);
+        $output = shell_exec('systemctl status ' . $serviceName);
         $isActive = strpos($output, 'Active: active') !== false;
-        return response()->json(['success' => true, 'command' => $output, 'isActive' => $isActive]);
+        return $isActive;
     }
 
 
