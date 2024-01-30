@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->boolean('status')->default(false);
+            $table->boolean('isFavorite')->default(false);
             $table->string('description');
             $table->timestamps();
         });
