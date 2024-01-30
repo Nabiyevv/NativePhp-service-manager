@@ -1,3 +1,11 @@
+## Screenshots
+
+Welcome to the first look of my project! This repository contains the source code and resources for NativePhp-service-manager.
+Below, you'll find a brief overview and some screenshots to give you a glimpse of what this app looks like.
+
+![Screenshot 1](screenshots/Screenshot%20from%202024-01-18%2017-36-17.png)
+![Screenshot 1](screenshots/Screenshot%20from%202024-01-18%2017-36-39.png)
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
